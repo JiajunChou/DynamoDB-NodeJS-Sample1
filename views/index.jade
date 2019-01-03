@@ -3,3 +3,30 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+
+  form(action="/users/addCar", method="post")
+    label(for='id') Id: 
+    input#id.form-control(type='text', name='id')
+    br
+    br
+    label(for='type') Type:
+    input#type.form-control(type='text', name='type')
+    br
+    br
+    label(for='name') Name:
+    input#name.form-control(type='text', name='name')
+    br
+    br
+    label(for='manufacturer') Manufacturer:
+    input#manufacturer.form-control(type='text', name='manufacturer')
+    br
+    br
+    label(for='fuel_type') Fuel Type: 
+    input#fuel_type.form-control(type='text', name='fuel_type')
+    br
+    br
+    label(for='Description') Description: 
+    input#description.form-control(type='text', name='description')
+    br
+    br
+    button.btn.btn-primary(type='submit') POST
