@@ -66,6 +66,36 @@ router.get('/readCar', function(req, res) {
     });
 });
 
+// post method
+router.post('/addCar', function(req, res) {
 
+    var docClient = new AWS.DynamoDB.DocumentClient();
+    
+    var table = "CarStorage";
+    
+    var params = {
+        TableName:table,
+        Item:{
+            "id": parseInt(req.body.id),
+            "type": req.body.type,
+            "name": req.body.name,
+            "manufacturer": req.body.manufacturer,
+            "fuel_type": req.body.fuel_type,
+            "description": req.body.description
+        }
+    };
+
+    console.log("Adding a new item...");
+    docClient.put(params, function(err, data) {
+        if (err) {
+            console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("Added item:", params.Item.name);
+            res.end();
+        }
+    });
+    
+
+});
 
 module.exports = router;
