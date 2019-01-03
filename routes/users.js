@@ -16,7 +16,9 @@ router.get('/cars', function(req, res, next) {
     res.send('Hello Dynamodb will coming soon!');
 });
 
-router.get('/readCar', function(req, res) {
+router.get('/readCar/:id', function(req, res) {
+
+    var paramId = parseInt(req.params.id);
 
     var docClient = new AWS.DynamoDB.DocumentClient();
     var table = "CarStorage";
@@ -24,7 +26,7 @@ router.get('/readCar', function(req, res) {
     var params = {
         TableName: table,
         Key:{
-            id: 4
+            id: paramId
         }
     };
 
