@@ -3,11 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var AWS = require("aws-sdk");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+app.listen(3000, () => console.log('API listening on port 3000!'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
