@@ -2,7 +2,15 @@
 
 Use DyanmoDB by NodeJS
 
-## Process
+## Run
+
+```bash
+git clone 
+npm install
+npm start
+```
+
+## Build Process History
 
 ### Project Init
 
