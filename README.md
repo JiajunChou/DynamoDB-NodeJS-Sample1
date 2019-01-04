@@ -72,3 +72,9 @@ tskill typeyourPIDhere
 ```
 
 REF: [Node.js Port 3000 already in use](https://stackoverflow.com/questions/39322089/node-js-port-3000-already-in-use-but-it-actually-isnt)
+
+## local aws dynamodb console
+
+- http://localhost:8000/shell/
+
+REF: [Example](https://docs.aws.amazon.com/zh_tw/amazondynamodb/latest/developerguide/GettingStarted.NodeJs.04.html)
