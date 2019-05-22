@@ -2,22 +2,25 @@ var express = require('express');
 var AWS = require("aws-sdk");
 
 AWS.config.update({
-    region: "us-west-2"
-  });
+    endpoint: 'http://localhost:8000',
+    region: 'local',
+    accessKeyId: 'local',
+    secretAccessKey: 'local',
+});
 
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/', function (req, res, next) {
+    res.send('respond with a resource');
 });
 
-router.get('/cars', function(req, res, next) {
+router.get('/cars', function (req, res, next) {
     res.send('Hello Dynamodb will coming soon!');
 });
 
 // Get method: params
-router.get('/readCar/:id', function(req, res) {
+router.get('/readCar/:id', function (req, res) {
 
     var paramId = parseInt(req.params.id);
 
@@ -26,12 +29,12 @@ router.get('/readCar/:id', function(req, res) {
 
     var params = {
         TableName: table,
-        Key:{
+        Key: {
             id: paramId
         }
     };
 
-    docClient.get(params, function(err, data) {
+    docClient.get(params, function (err, data) {
         if (err) {
             console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
         } else {
@@ -41,22 +44,16 @@ router.get('/readCar/:id', function(req, res) {
     });
 });
 
-// Get method: query
-router.get('/readCar', function(req, res) {
-
-    var paramId = parseInt(req.query.id);
+// Get method: scan
+router.get('/readCar', function (req, res) {
 
     var docClient = new AWS.DynamoDB.DocumentClient();
-    var table = "CarStorage";
 
     var params = {
-        TableName: table,
-        Key:{
-            id: paramId
-        }
+        TableName: 'CarStorage',
     };
 
-    docClient.get(params, function(err, data) {
+    docClient.scan(params, function (err, data) {
         if (err) {
             console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
         } else {
@@ -67,15 +64,15 @@ router.get('/readCar', function(req, res) {
 });
 
 // post method
-router.post('/addCar', function(req, res) {
+router.post('/addCar', function (req, res) {
 
     var docClient = new AWS.DynamoDB.DocumentClient();
-    
+
     var table = "CarStorage";
-    
+
     var params = {
-        TableName:table,
-        Item:{
+        TableName: table,
+        Item: {
             "id": parseInt(req.body.id),
             "type": req.body.type,
             "name": req.body.name,
@@ -86,7 +83,7 @@ router.post('/addCar', function(req, res) {
     };
 
     console.log("Adding a new item...");
-    docClient.put(params, function(err, data) {
+    docClient.put(params, function (err, data) {
         if (err) {
             console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
         } else {
@@ -94,7 +91,7 @@ router.post('/addCar', function(req, res) {
             res.end();
         }
     });
-    
+
 
 });
 
