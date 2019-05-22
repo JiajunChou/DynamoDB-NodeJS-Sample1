@@ -1,12 +1,24 @@
+require('dotenv').config();
 var express = require('express');
 var AWS = require("aws-sdk");
 
-AWS.config.update({
-    endpoint: 'http://localhost:8000',
-    region: 'local',
-    accessKeyId: 'local',
-    secretAccessKey: 'local',
-});
+environment = process.env.environment;
+console.log('Env: ' + environment);
+
+if (environment == 'local') {
+    AWS.config.update({
+        endpoint: 'http://localhost:8000',
+        region: 'local',
+        accessKeyId: 'local',
+        secretAccessKey: 'local',
+    });
+} else if (environment == 'dev') {
+    AWS.config.update({
+        region: process.env.region,
+        accessKeyId: process.env.accessKeyId,
+        secretAccessKey: process.env.secretAccessKey,
+    });
+}
 
 var router = express.Router();
 

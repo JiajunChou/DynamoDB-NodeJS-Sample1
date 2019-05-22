@@ -1,18 +1,23 @@
 require('dotenv').config();
 var AWS = require("aws-sdk");
 
-let environment = 'local';
+environment = process.env.environment;
+console.log('Env: ' + environment);
 
-if (process.argv[2] !== undefined) {
-    environment = process.argv[2];
+if (environment == 'local') {
+    AWS.config.update({
+        endpoint: 'http://localhost:8000',
+        region: 'local',
+        accessKeyId: 'local',
+        secretAccessKey: 'local',
+    });
+} else if (environment == 'dev') {
+    AWS.config.update({
+        region: process.env.region,
+        accessKeyId: process.env.accessKeyId,
+        secretAccessKey: process.env.secretAccessKey,
+    });
 }
-
-AWS.config.update({
-    endpoint: 'http://localhost:8000',
-    region: 'local',
-    accessKeyId: 'local',
-    secretAccessKey: 'local',
-});
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
