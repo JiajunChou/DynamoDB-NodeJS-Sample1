@@ -1,34 +1,12 @@
-require('dotenv').config();
-var express = require('express');
 var AWS = require("aws-sdk");
+var express = require('express');
 
-environment = process.env.environment;
-console.log('Env: ' + environment);
-
-if (environment == 'local') {
-    AWS.config.update({
-        endpoint: 'http://localhost:8000',
-        region: 'local',
-        accessKeyId: 'local',
-        secretAccessKey: 'local',
-    });
-} else if (environment == 'dev') {
-    AWS.config.update({
-        region: process.env.region,
-        accessKeyId: process.env.accessKeyId,
-        secretAccessKey: process.env.secretAccessKey,
-    });
-}
 
 var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-    res.send('respond with a resource');
-});
-
-router.get('/cars', function (req, res, next) {
-    res.send('Hello Dynamodb will coming soon!');
+    res.send('respond with a resource of Dynamodb, Hey DynamoDB is good');
 });
 
 // Get method: params
@@ -103,8 +81,30 @@ router.post('/addCar', function (req, res) {
             res.end();
         }
     });
+});
 
+router.post('/deleteCar', function (req, res) {
 
+    var docClient = new AWS.DynamoDB.DocumentClient();
+
+    var table = "CarStorage";
+
+    var params = {
+        TableName: table,
+        Key: {
+            "id": parseInt(req.body.id)
+        }
+    };
+
+    console.log("Delete a item...");
+    docClient.delete(params, function (err, data) {
+        if (err) {
+            console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("Delete item:", params.Key.id);
+            res.end();
+        }
+    });
 });
 
 module.exports = router;
